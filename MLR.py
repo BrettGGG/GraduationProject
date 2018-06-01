@@ -17,11 +17,11 @@ class MLR:
         Y = self.Y
         Xt = np.transpose(X)
         XtX = np.dot(Xt, X)
-        XtXinv = np.linalg.inv((XtX))
+        XtXinv = np.linalg.pinv((XtX))
         temp = np.dot(XtXinv, Xt)
         A = np.dot(temp,Y)
         self.A = A
-        print (A.shape)
+        #print (A.shape)
 
 
 # 预测过程，求对应Y

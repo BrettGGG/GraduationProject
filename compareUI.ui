@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CompareDialog</class>
+ <widget class="QDialog" name="CompareDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>900</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>算法结果对比</string>
+  </property>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>871</width>
+     <height>90</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="vlayout1_2" stretch="0,0">
+    <item>
+     <layout class="QHBoxLayout" name="hlayout_3" stretch="1,1">
+      <property name="spacing">
+       <number>200</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="hlayout1_3" stretch="0,1">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="lb1">
+          <property name="text">
+           <string>主机：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="cbx1">
+          <item>
+           <property name="text">
+            <string>选择master样品集</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>m5spec</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>mp5spec</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>mp6spec</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>m5nbs</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>mp5nbs</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>mp6nbs</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="hlayout2_3" stretch="0,1">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="lb2">
+          <property name="text">
+           <string>目标机：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="cbx2">
+          <item>
+           <property name="text">
+            <string>选择slaver样品集</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>m5spec</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>mp5spec</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>mp6spec</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>m5nbs</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>mp5nbs</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>mp6nbs</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="hlayout6_4" stretch="0">
+      <property name="spacing">
+       <number>100</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="btn">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>三种传递算法预测结果比对</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_6">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>100</y>
+     <width>871</width>
+     <height>411</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="hlayout4">
+    <item>
+     <widget class="QWidget" name="wg1" native="true"/>
+    </item>
+    <item>
+     <widget class="QWidget" name="wg2" native="true"/>
+    </item>
+    <item>
+     <widget class="QWidget" name="wg3" native="true"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>520</y>
+     <width>261</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="hlayout5">
+    <item>
+     <widget class="QLabel" name="lb4">
+      <property name="text">
+       <string>平均预测标准误差（SEP）：</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="lb5">
+      <property name="font">
+       <font>
+        <family>Arial Rounded MT Bold</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>0.00</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_4">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>520</y>
+     <width>261</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="hlayout5_4">
+    <item>
+     <widget class="QLabel" name="lb4_4">
+      <property name="text">
+       <string>平均预测标准误差（SEP）：</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="lb6">
+      <property name="font">
+       <font>
+        <family>Arial Rounded MT Bold</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>0.00</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_5">
+   <property name="geometry">
+    <rect>
+     <x>590</x>
+     <y>520</y>
+     <width>261</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="hlayout5_5">
+    <item>
+     <widget class="QLabel" name="lb4_5">
+      <property name="text">
+       <string>平均预测标准误差（SEP）：</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="lb7">
+      <property name="font">
+       <font>
+        <family>Arial Rounded MT Bold</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>0.00</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

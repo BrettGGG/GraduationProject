@@ -5,15 +5,18 @@
 'a test module'
 
 __author__ = "Brett"
-
+import math
 import scipy.io as sio
 import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
+
+
 # 配置中文显示
 zhfont1 = matplotlib.font_manager.FontProperties(fname='C:\Windows\Fonts\simkai.ttf')
 
 # matlab文件名
+
 matfn = u'F:\PyCharm\GraduationProject\corn.mat'
 data = sio.loadmat(matfn)
 
@@ -21,6 +24,15 @@ data = sio.loadmat(matfn)
 # get data from matlabobject in .mat file
 def getdata (m):
     return np.array(m.__getitem__("data")[0][0])
+
+
+# 计算平均光谱
+def averSpec(R):
+    # 若只有一个样本，则平均光谱就为R
+    if R.shape[0] == R.size:
+        return R
+    else :
+        return np.mean(R,0)
 
 m5s = data['m5spec']
 mp5s = data['mp5spec']
@@ -47,73 +59,76 @@ plt.show()
 
 for j in range(0,3):
     y = m5sArray[j,:] + 0.5*j  # 源机光谱
-    plt.plot(x,y,'r')
+    plt.plot(x,y,'r',label = '样本'+str(j)+ '(Master)')
     y = mp5sArray[j,:] + 0.5*j   # 目标机光谱
-    plt.plot(x, y, 'b')
+    plt.plot(x, y, 'b',label =  '样本'+str(j)+ '(Slaver)')
+plt.legend(prop=zhfont1)
 
 plt.xlabel("波长 (nm)",fontproperties=zhfont1)
 plt.ylabel("吸光度 (AU)",fontproperties=zhfont1)
-plt.title("仪器m5上测量的3组玉米样本光谱",fontproperties=zhfont1)
+plt.title("两台仪器3组玉米样本光谱对比",fontproperties=zhfont1)
 plt.show()
 
 
 
 #import numpy as np
-import PCR
-#Rms = np.arange(24).reshape(4,6)
-#Rss = np.arange(1,25).reshape(4,6)
+import PDS
+import Shenks
+
 # 取前 3 组样本
-Rms = m5sArray[0:3, :]
-Rss = mp5sArray[0:3, :]
-
+Rms = m5nbsArray[0:3, :]
+Rss = mp5nbsArray[0:3, :]
+pds = PDS.PDS(Rms, Rss)
+# 窗口大小选择
 win = 1
-# 循环计算转换系数
-X = []
-# 若只有一个样本，即Rss为一维时增加一维
-if Rss.shape[0] == Rss.size:
-    Rss = np.array([Rss])
-for i in range(win, Rss.shape[1] - win):
-    X.append(Rss[:, i - win: i + win + 1])
-X = np.array(X)
+k = 1
+pds.model(win,k)
 
-# 舍弃窗口两端,关联Rmsi 与Xi
-Rms = Rms[:, win: Rms.shape[1] - win]
-# 转换系数矩阵B
-B = []
-for i in range(X.shape[0]):
-    pcr = PCR.PCR(X[i], Rms[:, i])
-    pcr.model()    # 建模
-    B.append(pcr.A)
-#  size  698 * 3
-B = np.array(B)
-# 转置
-Bt = B.T
+Rssun = mp5nbsArray[0:3, :]
+Rmsun = m5nbsArray[0:3, :][:, win: Rssun.shape[1]-win]
 
-# 形成带状对角矩阵
-row = Bt.shape[0]
-col = Bt.shape[1]
-Ft = []
-for i in range(col - 1, -1, -1):
-    zeroR = np.zeros(i)
-    zeroL = np.zeros(col -1 -i)
-    Ft.append(np.hstack((zeroL, B[col - 1 - i], zeroR)))
-F = np.array(Ft).T
-#Rssun = np.arange(2,26).reshape(4,6)
-#Rmsunt = np.dot(Rssun, F)
-#print (Rmsunt)
+Rssyuce = pds.predict(Rssun)
+# 舍弃窗口两端
+xwin = x[win: Rssun.shape[1]-win]
+#y1 = averSpec(Rmsyuce) # 预测值
+#plt.plot(xwin, y1,'r')
+#    y = Rmsun[j, :] - 0.5 * j   #真实值
+#    plt.plot(xwin, y, 'b')
+y2 = averSpec(Rms)[win: Rssun.shape[1]-win]   # 平均光谱
+plt.plot(xwin, y2, 'b', label = '平均光谱')
+# 差值
+for i in range(3):
+    plt.plot(xwin , Rssyuce[i, :] - y2 ,label = '样本'+str(i)+ '与平均光谱差值')
 
-Rssun = mp5sArray[0:3, :]
-Rmsun = m5sArray[0:3, :][:, win: Rssun.shape[1]-win]
-for j in range(0,3):
-    Rmsyuce = np.dot(Rssun, F)
-    # 舍弃窗口两端
-    xwin = x[win: Rssun.shape[1]-win]
-    y = Rmsyuce[j, :] - 0.5*j  # 预测值
-    plt.plot(xwin, y,'r')
-    y = Rmsun[j, :] - 0.5 * j   #真实值
-    plt.plot(xwin, y, 'b')
 
-plt.xlabel("波长 (nm)",fontproperties=zhfont1)
-plt.ylabel("吸光度 (AU)",fontproperties=zhfont1)
+
+plt.xlabel("波长 (单位：nm)",fontproperties=zhfont1)
+plt.ylabel("吸光度 (单位：AU)",fontproperties=zhfont1)
 plt.title("根据仪器m5上预测的3组玉米样本光谱",fontproperties=zhfont1)
+plt.legend(prop=zhfont1)
 plt.show()
+
+shenks = Shenks.Shenks(Rms,Rss)
+shenks.model()
+xnew = shenks.xnew   # 由一元二次模型校正后的波长
+ynew = shenks.ynew   # 由校正后波长插值后的吸光度
+
+# 拟合前后的图像
+for i in range(Rms.shape[0]):
+    plt.plot(xnew, ynew[i], label='slinear' + str(i))
+    plt.plot(x, y, label='originline' + str(i))
+plt.legend()
+plt.show()
+
+Rssyuce = shenks.predict(Rssun)
+xnew = shenks.xnew   # 由校正模型  校正后的 波长
+plt.plot(xwin, y2, 'b', label='averageSpectrum')
+plt.legend()
+# 差值
+y2 = y2[:xnew.shape[0]]
+for i in range(Rssun.shape[0]):
+    plt.plot(xnew, Rssyuce[i] - y2, label='predictoffset' + str(i))
+    plt.legend()
+plt.show()
+
+
